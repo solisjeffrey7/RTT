@@ -1,0 +1,1073 @@
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width"/>
+<link rel="manifest" href="/manifest.json">
+<style>
+#currentTopSpeed::before {
+    content: "Top Speed: ";
+    color:black;
+    font-weight: bold;
+}
+ #currentTopSpeed {
+    font-size: 15px;
+    color: green;
+    margin-top: 0px;
+}
+#speed {
+    font-size: 2em;
+    color: #007bff;
+    margin-top: 20px;
+}
+
+#status {
+    font-size: 1.2em;
+    color: #555;
+    margin-bottom: 10px;
+}
+
+table {
+    margin: 20px auto;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+th, td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: center;
+}
+
+th {
+    background-color: #007bff;
+    color: white;
+}
+
+tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+tr:hover {
+    background-color: #ddd;
+}
+
+#container {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 0px;
+    background-color: #f0f0f0;
+}
+
+#chatlog {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 600px;
+    max-height: 200px;
+      overflow-y: auto;
+}
+
+.me {
+    background-color: #d1e7dd;
+    color: #0f5132;
+    border-radius: 10px 10px 0 10px;
+    padding: 10px;
+    margin: 5px 0;
+    text-align: right;
+    display: inline-block;
+    max-width: 80%;
+    min-width: 50%; /* Minimum width na 50% */
+    align-self: flex-end; /* Align sa kanan */
+    position: relative;
+}
+
+.me::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    right: 10px;
+    border-width: 10px;
+    border-style: solid;
+    border-color: #d1e7dd transparent transparent transparent;
+}
+
+.them {
+    background-color: #f8d7da;
+    color: #721c24;
+    border-radius: 10px 10px 10px 0;
+    padding: 10px;
+    margin: 5px 0;
+    text-align: left;
+    display: inline-block;
+    max-width: 80%;
+    min-width: 50%; /* Minimum width na 50% */
+    align-self: flex-start; /* Align sa kaliwa */
+    position: relative;
+}
+
+.them::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 10px;
+    border-width: 10px;
+    border-style: solid;
+    border-color: #f8d7da transparent transparent transparent;
+}
+
+video {
+    display: block;
+}
+
+.end-call-button {
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 5px 10px;
+    background-color: red;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+   .vid_username{
+    position:absolute;
+    top:5px;
+    left:5px;
+    padding:2px;
+    color:white;
+    background:black;
+}
+    .audio_username{
+    padding:10px;
+    border-radius:10px;
+    background:white;
+}
+
+.end-call-button:hover {
+    background-color: darkred;
+}
+  
+#videoContainer {
+    display: flex; 
+    flex-wrap: wrap; 
+    gap: 10px; /* Adjust spacing between videos */
+}
+
+.video-container{
+    background:gray;
+    position:relative;
+    width: 300px; /* Adjust based on your layout */
+    height: auto; /* Maintain aspect ratio */
+}
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background-color: #f4f4f4;
+    }
+    h1 {
+      margin-bottom: 20px;
+    }
+    #ipInput {
+      padding: 10px;
+      width: 200px;
+      margin-bottom: 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    button {
+      padding: 10px 15px;
+      background-color: #007BFF;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+    #statusLog {
+      margin-top: 20px;
+      border: 1px solid #ccc;
+      padding: 10px;
+      max-height: 200px;
+      overflow-y: auto;
+      background-color: #fff;
+      width: 100%;
+      max-width: 400px;
+      border-radius: 4px;
+    }
+
+    #chatbox{
+    margin-left:-10px; 
+    display: none;
+     margin-top: 20px;
+      border: 1px solid #ccc;
+      padding: 10px;
+      background-color: #fff;
+      width: 100%;
+      max-width: 600px;
+      border-radius: 4px;
+}
+    #chatbox2{
+      border: 1px solid #ccc;
+      padding: 10px;
+      background-color: #fff;
+      width: 100%;
+      max-width: 600px;
+      border-radius: 4px;
+   
+    }
+    #chatInput {
+      padding: 10px;
+      width: calc(100% - 50px);
+      margin-bottom: 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    #sendButton {
+      padding: 10px;
+      background-color: #28a745;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    #disconnectButton {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      padding: 10px;
+      background-color: red;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      display: none;
+    }
+    #connectedUsers {
+      margin-top: 20px;
+      width: 100%;
+      max-width: 400px;
+    }
+    #connectedUsers ul {
+      list-style-type: none;
+      padding: 0;
+    }
+    #connectedUsers li {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 10px;
+      background:white;
+      border-radius:10px;
+    }
+    #connectedUsers button {
+      padding: 5px 10px;
+      background-color: #28a745;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    #connectedUsers button:hover {
+      background-color: #218838;
+    }
+    #usernameInput {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      width: 30%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      display: block;
+    }
+
+ 
+#green{
+    color:green;
+}
+#red{
+    color:red;
+}
+
+
+
+
+#inputContainer {
+    display: flex;
+    width: 100%;
+    max-width: 600px;
+    margin-top: 10px;
+}
+
+#chatInput {
+    flex: 4; /* 80% ng width */
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px 0 0 5px;
+    outline: none;
+    height:100%;
+}
+
+#sendButton {
+    flex: 1; /* 20% ng width */
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-left: none;
+    background-color: #007bff;
+    color: white;
+    cursor: pointer;
+    border-radius: 0 5px 5px 0;
+    height:100%;
+}
+
+#sendButton:hover {
+    background-color: #0056b3;
+}
+
+.endcall{
+    background-color:red ! important;
+   }
+.close-button {
+  position: absolute ! important;
+  top: 5px ! important;
+  right: 10px ! important;
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+#hidden{
+   display:none;
+  }
+
+#signal-status {
+    font-size: 12px;
+    color: #555;
+}
+  </style>
+</head>
+<body>
+  <div id="main-container">
+    <br>
+    <h1>RidersTT</h1>
+    <input type="text" id="ipInput" placeholder="Enter server IP" />
+    <button onclick="startConnection()">Connect</button>
+
+
+
+ <div id="status">Waiting for GPS signal...</div>
+        <div id="speed">0.00 km/h</div>
+<div id="currentTopSpeed">0.00 km/h</div>        
+ <div id="signal-status">Signal Strength: N/A</div>
+        <h2>Leaderboard</h2>
+        <table id="speedBoard">
+            <thead>
+                <tr>
+                    <th>User</th>
+                    <th>Top Speed</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Leaderboard rows will be dynamically added here -->
+            </tbody>
+        </table>
+
+
+   
+<div id="hidden">
+ <h3>Status Log:</h3>
+    <div id="statusLog"></div>
+</div>
+
+    <div id="connectedUsers" style="display: none;">
+      <h3>Connected Users:</h3>
+      <ul id="userList"></ul>
+    </div>
+   <div id="chatBox">
+      <h3>Chat:</h3>
+ 
+<div id="container">
+   <div id="chatBox2">
+     <div id="chatLog"></div>
+   </div>
+</div>     
+ <div id="inputContainer">
+  <input type="text" id="chatInput" placeholder="Type your message..." />
+  <button id="sendButton" onclick="sendMessage()">Send</button>
+</div>
+</div>   
+
+ <audio id="remoteAudio" autoplay></audio>
+  </div>
+  <button id="disconnectButton" onclick="disconnect()">Disconnect</button>
+  <input type="text" id="usernameInput" placeholder="Username" />
+<br>
+<div id="videoContainer"></div>
+<div id="audioCallList"></div>
+
+  <script>
+    let ws;
+    let localStream;
+    const peerConnections = {};
+    const remoteAudioElements = {};
+    const stunServerUrl = `stun:${window.location.hostname}:3478`;
+    const servers = {
+      iceServers: [
+        {
+          urls: stunServerUrl
+        },
+        {
+          urls: 'stun:stun.l.google.com:19302'
+        }
+      ]
+    };
+    let connectedUsers = [];
+    let username = getQueryParam('name') || '';
+
+    function getQueryParam(param) {
+      const urlParams = new URLSearchParams(window.location.search);
+      return urlParams.get(param);
+    }
+
+    function requestMicrophoneAccess() {
+      return navigator.mediaDevices.getUserMedia({ video : true, audio: true });
+    }
+
+    function startConnection() {
+      const serverIP = document.getElementById('ipInput').value;
+      if (!username) {
+        username = document.getElementById('usernameInput').value || 'User-' + Math.floor(Math.random() * 10000);
+        const newUrl = updateQueryStringParameter(window.location.href, 'name', username);
+        window.history.replaceState({ path: newUrl }, '', newUrl);
+      }
+
+      requestMicrophoneAccess().then(stream => {
+        localStream = stream;
+        appendStatusLog('<span id="green">Audio & video stream obtained.</span>');
+
+        ws = new WebSocket(`wss://${serverIP}:8443`);
+
+        ws.onopen = () => {
+          appendStatusLog('Connected to server: ' + serverIP);
+          ws.send(JSON.stringify({ type: 'login', name: username }));
+          document.getElementById('ipInput').style.display = 'none';
+          document.querySelector('button[onclick="startConnection()"]').style.display = 'none';
+          document.getElementById('chatBox').style.display = 'block';
+          document.getElementById('disconnectButton').style.display = 'block';
+          document.getElementById('connectedUsers').style.display = 'block';
+        };
+
+        ws.onmessage = message => {
+    const data = JSON.parse(message.data);
+    switch (data.type) {
+        case 'updateUserList':
+            updateUserList(data.users);
+            break;
+        case 'offer':
+            handleOffer(data.offer, data.from, data.isVideoCall);
+            break;
+        case 'answer':
+            handleAnswer(data.answer, data.from);
+            break;
+        case 'iceCandidate':
+            handleIceCandidate(data.iceCandidate, data.from);
+            break;
+        case 'chatMessage':
+            appendChatLog('<div class="them">' + data.message + '</div>');
+            break;
+        case 'endCall':
+            endCall(data.delete);
+            break;
+        case 'quit':
+            endCall(data.delete);
+            break;
+        case 'speed':
+            updateLeaderboard(data.from, data.speed);
+            break;
+    }
+};
+
+        ws.onclose = () => {
+          appendStatusLog('<span id="red">Disconnected from server.</span>');
+          resetUI();
+        };
+
+        ws.onerror = error => {
+          appendStatusLog('WebSocket error: ' + error);
+        };
+      }).catch(error => {
+        appendStatusLog('Error obtaining audio stream: ' + error);
+      });
+    }
+
+    function updateUserList(users) {
+      connectedUsers = users.filter(user => user !== username);
+      const userList = document.getElementById('userList');
+      userList.innerHTML = '';
+
+      connectedUsers.forEach(user => {
+        const listItem = document.createElement('li');
+        listItem.textContent = user;
+
+        const callButton = document.createElement('button');
+        callButton.textContent = 'voice';
+        callButton.onclick = () => startCall(user, false);
+6
+
+       const callButton2 = document.createElement('button');
+        callButton2.textContent = 'video';
+        callButton2.onclick = () => startCall(user, true);
+
+        listItem.appendChild(callButton2);
+
+        listItem.appendChild(callButton);
+        userList.appendChild(listItem);
+      });
+    }
+
+
+  
+
+    function handleOffer(offer, from, isVideoCall) {
+    const peerConnection = new RTCPeerConnection(servers);
+    peerConnections[from] = peerConnection;
+ 
+    peerConnection.setRemoteDescription(new RTCSessionDescription(offer)).then(() => {
+  
+        if (isVideoCall) {
+            localStream.getTracks().forEach(track => peerConnection.addTrack(track, localStream));
+        } else {
+            localStream.getAudioTracks().forEach(track => peerConnection.addTrack(track, localStream));
+        }
+        return peerConnection.createAnswer();
+    }).then(answer => {
+        peerConnection.setLocalDescription(answer);
+        replaceBtn(from,isVideoCall);
+        ws.send(JSON.stringify({ type: 'answer', answer: answer, to: from, from: username }));
+ 
+  }).catch(error => {
+        appendStatusLog('Error handling offer: ' + error);
+    });
+
+  
+    peerConnection.ontrack = event => {
+        if (event.streams[0]) {
+            if (isVideoCall) {
+                showCallerVideo(from, event.streams[0]);
+                monitorAudioStream(event.streams[0], from);            
+       } else {
+                showCallerAudio(from, event.streams[0]);
+                monitorAudioStream(event.streams[0], from);            
+}
+        }
+}
+
+    peerConnection.onicecandidate = event => {
+        if (event.candidate) {
+            ws.send(JSON.stringify({ type: 'iceCandidate', iceCandidate: event.candidate, to: from, from: username }));
+            appendStatusLog(`Sent ICE candidate to ${from}.`);
+        }
+    };
+}
+
+    function handleAnswer(answer, from) {
+      const peerConnection = peerConnections[from];
+      if (peerConnection) {
+        peerConnection.setRemoteDescription(new RTCSessionDescription(answer)).catch(error => {
+          appendStatusLog('Error handling answer: ' + error);
+        });
+      }
+    }
+
+    function handleIceCandidate(iceCandidate, from) {
+      const peerConnection = peerConnections[from];
+      if (peerConnection) {
+        peerConnection.addIceCandidate(new RTCIceCandidate(iceCandidate)).catch(error => {
+          appendStatusLog('Error adding ICE candidate: ' + error);
+        });
+      }
+    }
+
+    function appendStatusLog(message) {
+      const log = document.getElementById('statusLog');
+      log.innerHTML += message + '<br />';
+      log.scrollTop = log.scrollHeight;
+    }
+
+    function appendChatLog(message) {
+      const chatLog = document.getElementById('chatLog');
+      chatLog.innerHTML += message + '<br />';
+      chatLog.scrollTop = chatLog.scrollHeight;
+    }
+
+    function sendMessage() {
+      const messageInput = document.getElementById('chatInput');
+      const message = messageInput.value;
+      if (message) {
+        ws.send(JSON.stringify({ type: 'chatMessage', message: message, from: username }));
+        appendChatLog('<div class="me">' + message + '</div>');
+        messageInput.value = '';
+      }
+    }
+
+    function resetUI() {
+      document.getElementById('ipInput').style.display = 'block';
+      document.querySelector('button[onclick="startConnection()"]').style.display = 'block';
+      document.getElementById('chatBox').style.display = 'none';
+      document.getElementById('disconnectButton').style.display = 'none';
+      document.getElementById('connectedUsers').style.display = 'none';
+      document.getElementById('userList').innerHTML = '';
+     document.getElementById('videoContainer').innerHTML = '';
+     document.getElementById('audioCallList').innerHTML = '';
+
+      connectedUsers = [];
+      for (const user in peerConnections) {
+        if (peerConnections[user]) {
+          peerConnections[user].close();
+        }
+      }
+      for (const user in remoteAudioElements) {
+        if (remoteAudioElements[user]) {
+          remoteAudioElements[user].pause();
+        }
+      }
+    }
+
+    function disconnect() {
+      Object.keys(peerConnections).forEach(userKey => {
+         endCall(userKey);
+      });
+      ws.send(JSON.stringify({ type: 'quit', delete : username }));
+      
+      if (ws) {
+        ws.close();
+      }
+      resetUI();
+      appendStatusLog('YOU ARE DISCONNECTED');    
+}
+
+    document.getElementById('usernameInput').addEventListener('change', function() {
+      username = this.value;
+      const newUrl = updateQueryStringParameter(window.location.href, 'name', username);
+      window.history.replaceState({ path: newUrl }, '', newUrl);
+    });
+
+    function updateQueryStringParameter(uri, key, value) {
+      const re = new RegExp('([?&])' + key + '=.*?(&|$)', 'i');
+      const separator = uri.indexOf('?') !== -1 ? '&' : '?';
+      if (uri.match(re)) {
+        return uri.replace(re, '$1' + key + '=' + value + '$2');
+      }
+      return uri + separator + key + '=' + value;
+    }
+
+    function setUsernameFromURL() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const nameParam = urlParams.get('name');
+      if (nameParam) {
+        document.getElementById('usernameInput').value = nameParam;
+        username = nameParam;
+      }
+    }
+
+    window.onload = setUsernameFromURL;
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const ipInput = document.getElementById('ipInput');
+      ipInput.value = window.location.hostname;
+    });
+
+    function monitorAudioStream(stream, user) {
+      const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+      const mediaStreamSource = audioContext.createMediaStreamSource(stream);
+      const analyser = audioContext.createAnalyser();
+      mediaStreamSource.connect(analyser);
+      analyser.fftSize = 2048;
+      const bufferLength = analyser.frequencyBinCount;
+      const dataArray = new Uint8Array(bufferLength);
+
+      function checkVolume() {
+        analyser.getByteFrequencyData(dataArray);
+        const volume = dataArray.reduce((a, b) => a + b) / bufferLength;
+
+        if (volume > 10) {
+          highlightSpeakingUser(user, true);
+        } else {
+          highlightSpeakingUser(user, false);
+        }
+        requestAnimationFrame(checkVolume);
+      }
+      checkVolume();
+    }
+
+    function highlightSpeakingUser(user, isSpeaking) {
+      const userListItems = document.querySelectorAll('#userList li');
+      userListItems.forEach(item => {
+        if (item.textContent.includes(user)) {
+          if (isSpeaking) {
+            item.style.backgroundColor = '#ffeb3b';
+          } else {
+            item.style.backgroundColor = '';
+          }
+        }
+      });
+    }
+
+
+
+
+
+function startCall(user, isVideoCall) {
+  if (peerConnections[user]) {
+      appendStatusLog(`<span id="red"><b>${user}</b> is already connected.</span>`);
+     return;
+    }
+
+
+   replaceBtn(user, isVideoCall);
+
+    const peerConnection = new RTCPeerConnection(servers);
+    peerConnections[user] = peerConnection;
+
+    localStream.getTracks().forEach(track => peerConnection.addTrack(track, localStream));
+
+    peerConnection.createOffer().then(offer => {
+        // Include the call type in the offer
+        peerConnection.setLocalDescription(offer);
+        ws.send(JSON.stringify({ type: 'offer', offer: offer, to: user, from: username, isVideoCall: isVideoCall }));
+        appendStatusLog(`Calling ${user}...`);
+    }).catch(error => {
+        appendStatusLog('Error creating offer: ' + error);
+    });
+
+    peerConnection.ontrack = event => {
+        // Handle incoming tracks
+        if (event.streams[0]) {
+            if (isVideoCall) {
+                showCallerVideo(user, event.streams[0]);
+monitorAudioStream(event.streams[0], user);         
+   } else {
+                showCallerAudio(user, event.streams[0]);
+monitorAudioStream(event.streams[0], user);
+            }
+        }
+    };
+
+    peerConnection.onicecandidate = event => {
+        if (event.candidate) {
+            ws.send(JSON.stringify({ type: 'iceCandidate', iceCandidate: event.candidate, to: user, from: username }));
+            appendStatusLog(`Sent ICE candidate to ${user}.`);
+        }
+    };
+}
+
+function showCallerVideo(user, remoteStream) {
+    if (!document.getElementById(`videoContainer_${user}`)) { 
+       const videoContainer = document.createElement('div');
+        videoContainer.id = `videoContainer_${user}`;
+        videoContainer.className = 'video-container';
+
+        const name = document.createElement('span');
+        name.textContent = user;
+        name.className = 'vid_username';
+        
+
+        const remoteVideo = document.createElement('video');
+        remoteVideo.srcObject = remoteStream;
+        remoteVideo.autoplay = true;
+        remoteVideo.style.width = "300px";
+        remoteVideo.style.height = "auto";
+        remoteVideo.id = `video_${user}`;
+        
+        const endCallButton = document.createElement('button');
+        endCallButton.textContent = 'End Video Call';
+        endCallButton.onclick = () => endCall(user);
+        endCallButton.className = 'end-call-button';
+
+       videoContainer.appendChild(name);
+        videoContainer.appendChild(remoteVideo);
+        videoContainer.appendChild(endCallButton);
+        document.getElementById('videoContainer').appendChild(videoContainer);
+        appendStatusLog(`<span id="green">Receiving video from <b>${user}</b>.</span>`);
+        
+        popupDiv(`videoContainer_${user}`);  
+  }
+}
+
+function showCallerAudio(user, remoteStream) {
+    if (!remoteAudioElements[user]) {
+        const remoteAudio = new Audio();
+        remoteAudio.srcObject = remoteStream;
+        remoteAudio.play();
+        remoteAudioElements[user] = remoteAudio;
+  
+
+        const audioCallContainer = document.getElementById('audioCallList');
+        const audioCallUserItem = document.createElement('div');
+        audioCallUserItem.className = 'audio_username';
+        audioCallUserItem.textContent = `Audio Call with ${user}`;
+        
+        const audioEndCallButton = document.createElement('button');
+        audioEndCallButton.textContent = 'End Audio Call';
+        audioEndCallButton.onclick = () => endCall(user);
+        
+        audioCallUserItem.appendChild(audioEndCallButton);
+        audioCallContainer.appendChild(audioCallUserItem);
+        appendStatusLog(`<span id="green">Receiving audio from <b>${user}</b>.</span>`);
+    }
+}
+
+function endCall(user) {
+    appendStatusLog(`<span id="red">initiate End Call with: <b>${user}</b>.</span>`);
+    const peerConnection = peerConnections[user];
+  
+    
+    const videoElement = document.getElementById(`video_${user}`);
+    if (videoElement) {
+        videoElement.remove();
+    }
+
+    const videoContainer = document.getElementById(`videoContainer_${user}`);
+    if (videoContainer) {
+        videoContainer.remove();
+    }
+
+    const audioCallContainer = document.getElementById('audioCallList');
+    const audioUserItems = audioCallContainer.childNodes;
+    audioUserItems.forEach(item => {
+        if (item.textContent.includes(user)) {
+            item.remove();
+        }
+    });
+
+    if (remoteAudioElements[user]) {
+        remoteAudioElements[user].pause();
+        delete remoteAudioElements[user];
+    }
+
+
+   if (peerConnection) {
+        restoreBtn(user);
+        ws.send(JSON.stringify({ type: 'endCall', to : user, delete : username }));
+        peerConnection.close();
+        delete peerConnections[user];
+        appendStatusLog(`<span id="red"><b>CALL END</b></span>.`);
+    }
+ }
+  
+ function restoreBtn(user){
+      
+       const userListItems = document.querySelectorAll('#userList li');
+       userListItems.forEach(listItem => {
+       if (listItem.textContent.includes(user)) {
+       listItem.textContent = user;
+        const callButton = document.createElement('button');
+        callButton.textContent = 'voice';
+        callButton.onclick = () => startCall(user, false);
+       const callButton2 = document.createElement('button');
+        callButton2.textContent = 'video';
+        callButton2.onclick = () => startCall(user, true);
+        listItem.appendChild(callButton2);
+        listItem.appendChild(callButton);
+        userList.appendChild(listItem);
+    }
+
+      });
+}
+
+
+ function replaceBtn(user, isVideoCall){
+ 
+      const userListItems = document.querySelectorAll('#userList li');
+      userListItems.forEach(listItem => {
+        if (listItem.textContent.includes(user)) {
+          if (isVideoCall) {
+        listItem.textContent = 'video: ' + user;
+        listItem.onclick = () => popupDiv(`videoContainer_${user}`);
+6          } else {
+        listItem.textContent = 'audio: ' + user;
+          }
+
+
+        const callButton = document.createElement('button');
+        callButton.className = 'endcall'
+        callButton.textContent = 'endcall';
+        callButton.onclick = () => endCall(user);
+        listItem.appendChild(callButton);
+        userList.appendChild(listItem);
+                                            
+        }
+      });
+}
+
+
+function resetDiv(divId) {
+  var div = document.getElementById(divId);
+  document.getElementById(`btn_${divId}`).remove();
+  div.style.position = 'relative';    // Restore position
+  div.style.top = '';                 // Clear centering
+  div.style.left = '';                // Clear centering
+  div.style.transform = '';           // Clear transform
+  div.style.width = '';               // Reset width
+  div.style.hemight = '';              // Reset height
+  div.style.backgroundColor = '';     // Reset background color
+  div.style.boxShadow = '';           // Remove shadow
+  div.style.zIndex = '';              // Reset z-index
+  }
+
+function popupDiv(divId) {
+  var div = document.getElementById(divId);
+  const btn = document.createElement('span');
+  btn.onclick = () => resetDiv(divId);
+  btn.className = 'close-button';
+  btn.id = `btn_${divId}`;
+  btn.textContent = 'x';
+  div.appendChild(btn);
+  div.style.position = 'fixed';    
+  div.style.top = '50%';               
+  div.style.left = '50%';              
+  div.style.transform = 'translate(-50%, -50%)';
+  div.style.width = '300px';          
+  div.style.height = 'auto';          
+  div.style.backgroundColor = 'white'; 
+  div.style.boxShadow = '0 0 10px rgba(0,0,0,0.5)'; 
+  div.style.zIndex = '1000';        
+}
+
+function sendSpeed(speed){
+      if (speed) {
+        ws.send(JSON.stringify({ type: 'speed', speed : speed, from: username }));
+      }
+    }
+
+
+
+let users = [];
+let currentUserTopSpeed = 0;
+
+function updateSpeed(position) {
+    const speed = position.coords.speed;
+    const speedKmh = (speed * 3.6).toFixed(2);
+
+    document.getElementById('speed').textContent = speedKmh + ' km/h';
+    document.getElementById('status').textContent = "GPS signal acquired!";
+    if (parseFloat(speedKmh) > currentUserTopSpeed) {
+        currentUserTopSpeed = parseFloat(speedKmh);
+        document.getElementById('currentTopSpeed').textContent = currentUserTopSpeed.toFixed(2) + ' km/h';
+        sendSpeed(parseFloat(speedKmh));
+    }
+}
+
+function updateLeaderboard(userName, topSpeed) {
+    let userIndex = users.findIndex(u => u.name === userName);
+
+    if (userIndex !== -1) {
+        if (topSpeed > users[userIndex].topSpeed) {
+            users[userIndex].topSpeed = topSpeed;
+        }
+    } else {
+        users.push({ name: userName, topSpeed: topSpeed });
+    }
+
+    renderLeaderboard();
+}
+
+function renderLeaderboard() {
+    const tableBody = document.querySelector("#speedBoard tbody");
+    tableBody.innerHTML = "";
+
+    users.forEach(user => {
+        const row = document.createElement('tr');
+        const userNameCell = document.createElement('td');
+        const topSpeedCell = document.createElement('td');
+
+        userNameCell.textContent = user.name;
+        topSpeedCell.textContent = user.topSpeed.toFixed(2) + " km/h";
+
+        row.appendChild(userNameCell);
+        row.appendChild(topSpeedCell);
+        tableBody.appendChild(row);
+    });
+}
+
+function errorHandler(error) {
+    document.getElementById('status').textContent = "Error: Unable to retrieve GPS data.";
+}
+
+if (navigator.geolocation) {
+    navigator.geolocation.watchPosition(updateSpeed, errorHandler, {
+        enableHighAccuracy: true
+    });
+} else {
+    document.getElementById('status').textContent = "Geolocation is not supported by this browser.";
+}
+
+
+
+
+function updateSignalStrength(strength) {
+    const signalStatus = document.getElementById('signal-status');
+    signalStatus.textContent = `Signal Strength: ${strength}%`;
+}
+
+function getWifiSignalStrength() {
+    if (navigator.connection) {
+        const connection = navigator.connection;
+        if (connection.effectiveType) {
+            let strength;
+            switch (connection.effectiveType) {
+                case '4g':
+                    strength = 100;
+                    break;
+                case '3g':
+                    strength = 70;
+                    break;
+                case '2g':
+                    strength = 30;
+                    break;
+                case 'slow-2g':
+                    strength = 10;
+                    break;
+                default:
+                    strength = 0;
+            }
+            updateSignalStrength(strength);
+        } else {
+            document.getElementById('signal-status').textContent = "Signal Strength: Not available";
+        }
+    } else {
+        document.getElementById('signal-status').textContent = "Network Information API not supported";
+    }
+}
+
+getWifiSignalStrength();
+setInterval(getWifiSignalStrength, 1000);
+ 
+
+
+ if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/service-worker.js')
+                    .then(registration => {
+                        console.log('Service Worker registered with scope:', registration.scope);
+                    })
+                    .catch(error => {
+                        console.error('Service Worker registration failed:', error);
+                    });
+            });
+        }
+ </script>
+</body>
+</html>
